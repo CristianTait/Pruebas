@@ -19,3 +19,6 @@ if (isset($current_user->caps['administrator']) && $current_user->caps['administ
 if (isset($current_user->allcaps['administrator']) && $current_user->allcaps['administrator'] == 1) {
     echo 'El usuario tiene la capacidad de administrador en allcaps.';
 }
+
+
+Fatal error: Allowed memory size of 1073741824 bytes exhausted (tried to allocate 20480 bytes)
