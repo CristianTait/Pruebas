@@ -1,0 +1,32 @@
+
+
+global $wpdb;
+			$table_name = $wpdb->prefix.'updatepricestableContent';
+
+			$sql = "
+				CREATE TA LE IF NO EXISTS $tabla_name(
+					id INT NOT NULL AUTO_INCREMENT,
+					usuario_id INT NOT NULL,
+					B DECIMAL(10, 2) NOT NULL,
+					C DECIMAL(10, 2) NOT NULL,
+					D DECIMAL(10, 2) NOT NULL,
+					cotizacion DECIMAL (10, 2) NOT NULL,
+					precio_minimo DECIMAL (10, 2) NOT NULL,
+					fecha DATETIME NOT NULL,
+					PRIMARY KEY (id)
+				) $wpdb->charset COLLATE $wpdb->collate;";
+
+			require_one (ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql);
+			
+			$data = array(
+				'usuario_id' => $usuario_id,
+				'B' => $B,
+				'C' => $C,
+				'D' => $D,
+				'cotizacion' => $cot,
+				'precio_minimo' => $precio_minimo,
+				'fecha' => current_time('mysql'),
+			);
+
+			$wpdb->insert($table_name, $data);
