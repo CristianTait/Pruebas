@@ -1,0 +1,40 @@
+// Define la función mejorarLpc
+function mejorarLpc() {
+  // Coloca aquí tu código para mejorar el Largest Contentful Paint
+  console.log('Mejorando el Largest Contentful Paint');
+}
+
+// Agrega un evento 'DOMContentLoaded' para ejecutar código después de que el DOM se cargue
+document.addEventListener('DOMContentLoaded', () => {
+  // Registra el inicio del tiempo de carga
+  const startTime = performance.now();
+
+  // Registra el evento LCP
+  const observer = new PerformanceObserver((list) => {
+    for (const entry of list.getEntries()) {
+      if (entry.entryType === 'largest-contentful-paint') {
+        // Aquí puedes registrar el valor de LCP y tomar medidas en consecuencia
+        console.log('LCP:', entry.startTime);
+
+        // Llama a tu función mejorarLpc() cuando se registre el LCP
+        mejorarLpc();
+      }
+    }
+  });
+
+  observer.observe({ type: 'largest-contentful-paint', buffered: true });
+
+  // Registra el tiempo total de carga
+  window.addEventListener('load', () => {
+    const loadTime = performance.now() - startTime;
+    console.log('Tiempo total de carga:', loadTime);
+  });
+
+  // Obtén todas las etiquetas <img> en la página
+  const imagenes = document.querySelectorAll('img');
+
+  // Recorre todas las imágenes y agrega el atributo 'loading' con el valor 'lazy'
+  imagenes.forEach((imagen) => {
+    imagen.setAttribute('loading', 'lazy');
+  });
+});
