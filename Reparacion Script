@@ -1,0 +1,23 @@
+function custom_wp_data_script() {
+    $user_id = 0;
+    if (function_exists('get_current_user_id')) {
+        $user_id = get_current_user_id();
+    }
+    
+    $storage_key = "WP_DATA_USER_" . $user_id;
+    
+    if (function_exists('wp_add_inline_script')) {
+        wp_add_inline_script('wp-data', '
+            ( function() {
+                var userId = ' . $user_id . ';
+                var storageKey = "WP_DATA_USER_" + userId;
+                if (typeof wp !== "undefined" && wp.data && wp.data.plugins && wp.data.plugins.persistence) {
+                    wp.data.use( wp.data.plugins.persistence, {
+                        storageKey: storageKey
+                    } );
+                }
+            } )();
+        ');
+    }
+}
+add_action('wp_enqueue_scripts', 'custom_wp_data_script');
