@@ -1,1 +1,1 @@
-https://developers.google.com/speed/docs/insights/faq?hl=es
+2023/09/09 15:17:56 [error] 26255#26255: *12869501 FastCGI sent in stderr: "PHP message: Error al llamar a asyncupdates.phpcURL error 28: Operation timed out after 5000 milliseconds with 0 bytes received" while reading response header from upstream, client: 201.190.251.239, server: dixgamer.com, request: "POST /wp-admin/post.php HTTP/2.0", upstream: "fastcgi://unix:/var/run/php8.0-fpm-game24hs.sock:", host: "dixgamer.com:47637", referrer: "https://dixgamer.com/wp-admin/post.php?post=62138&action=edit"
