@@ -1,19 +1,47 @@
- // Función para gestionar el formulario del widget en el backend
-    public function form($instance) {
+    // Función para mostrar contenido en el Frontend
+    public function widget($args, $instance) {
         $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
-        ?>
-        <p>
-            <label for="<?php echo $this->get_field_id('selected_category'); ?>">Selecciona una categoría de productos de WooCommerce:</label>
-            <select class="widefat" id="<?php echo $this->get_field_id('selected_category'); ?>"
-                    name="<?php echo $this->get_field_name('selected_category'); ?>">
-                <?php
-                // Obtiene la lista de categorías de productos de WooCommerce
-                $product_categories = get_terms('product_cat', array('hide_empty' => false));
-                foreach ($product_categories as $category) {
-                    echo '<option value="' . esc_attr($category->term_id) . '" ' . selected($selected_category, $category->term_id) . '>' . esc_html($category->name) . '</option>';
+
+        // Verifica si se seleccionó una categoría
+        if ($selected_category > 0) {
+            // Obtiene los productos de la categoría seleccionada
+            $products = wc_get_products(array(
+                'category' => array($selected_category),
+                'limit' => -1,
+            ));
+
+            // Verifica si hay productos en la categoría
+            if (!empty($products)) {
+                // Genera el div con la clase "widget-category-products"
+                echo '<div class="widget-category-products">';
+
+                // Genera el slider con Slick
+                echo '<div class="slick-slider">';
+                echo '<div class="slider-items">';
+
+                foreach ($products as $product) {
+                    $this->render_product($product);
                 }
-                ?>
-            </select>
-        </p>
-        <?php
+
+                // Cierra el slider
+                echo '</div>';
+
+                // Agrega los controles del slider
+                echo '<div class="slider-controls">';
+                echo '<button class="prev">Prev</button>';
+                echo '<button class="next">Next</button>';
+                echo '</div>';
+
+                // Cierra el div "widget-category-products"
+                echo '</div>';
+                echo '</div>';
+
+                // Encola los scripts de Slick Slider
+                $this->enqueue_slick_slider();
+            } else {
+                echo 'No hay productos en esta categoría.';
+            }
+        } else {
+            echo 'No se seleccionó ninguna categoría.';
+        }
     }
