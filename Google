@@ -1,113 +1,114 @@
 
-<?php
-
-class custom_product_list extends WP_widget {
-    //Constructor
-    public function __construct(){
+class Custom_Product_List_Widget extends WP_Widget {
+    // Constructor
+    public function __construct() {
         parent::__construct(
-        'custom_product_list_widget',
-        __('Lista de productos Persoanlizada', 'text_domain'),
-        array(
-            'description' => __('Muestra una lista de productos personalizada', 'text_domain'),
-        )
+            'custom_product_list_widget',
+            __('Lista de productos Personalizada', 'text_domain'),
+            array(
+                'description' => __('Muestra una lista de productos personalizada', 'text_domain'),
+            )
         );
     }
 
-    //Funcion para mostrar contenido en el Frontend
-    public function widget($args, $instance){
+    // Función para mostrar contenido en el Frontend
+    public function widget($args, $instance) {
         $selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
 
-        //Verifico si encontre el producto
-        if ($selected_product >0){
-
-            //Guardo el producto seleccionado
+        // Verifica si se seleccionó un producto
+        if ($selected_product > 0) {
+            // Guarda el producto seleccionado
             $product = wc_get_product($selected_product);
 
-            //Voy a verificar si el producto existe y es visible
-            if (is_a($product, 'WC_Product') && $product->is_visible()){
+            // Verifica si el producto existe y es visible
+            if (is_a($product, 'WC_Product') && $product->is_visible()) {
+                // Genera el div con la clase "widget-product"
+                echo '<div class="widget-product">';
 
-                //Genero el Div con la clase widget-product
-                echo '<div class="widget-product>';
-
-                //Voy a generar el slider con Slick
+                // Genera el slider con Slick
                 echo '<div class="slick-slider">';
                 echo '<div class="slider-items">';
                 $this->render_product($product);
 
-                //Voy a cerrar el Slider
+                // Cierra el slider
                 echo '</div>';
 
-                //Agrego los controles
+                // Agrega los controles del slider
                 echo '<div class="slider-controls">';
                 echo '<button class="prev">Prev</button>';
                 echo '<button class="next">Next</button>';
-
-                //Cierro Div
-                echo '</div>';
-                echo '</div>';
                 echo '</div>';
 
-                //Agrego los scripts de Slick Slider
+                // Cierra el div "widget-product"
+                echo '</div>';
+                echo '</div>';
+
+                // Encola los scripts de Slick Slider
                 $this->enqueue_slick_slider();
-            }else{
-                echo 'Producto no valido';
+            } else {
+                echo 'Producto no válido';
             }
-        }else{
-            echo 'No se selecciono el producto';
+        } else {
+            echo 'No se seleccionó ningún producto';
         }
+    }
+
+    // Función para generar el HTML de un producto
+    private function render_product($product) {
+        echo '<div class="slide">';
+        echo '<a href="' . get_permalink($product->get_id()) . '">';
+        echo '<img src="' . $product->get_image() . '" alt="' . esc_attr($product->get_name()) . '">';
+        echo '<h2>' . esc_html($product->get_name()) . '</h2>';
+        echo '<span class="price">' . $product->get_price_html() . '</span>';
+        echo '</a>';
+        echo '</div>';
+    }
+
+    // Función para encolar scripts y estilos
+    private function enqueue_slick_slider() {
+        // Asegúrate de que las rutas a los archivos CSS y JavaScript sean correctas
+        wp_enqueue_style('slick-css', get_template_directory_uri() . '/css/slick.css');
+        wp_enqueue_script('slick-js', get_template_directory_uri() . '/js/slick.min.js', array('jquery', 'slick-js'), null, true);
+
+        // Agrega el script personalizado para el slider con carga bajo demanda
+        wp_enqueue_script('widget-slider', get_template_directory_uri() . '/js/widget-slider.js', array('jquery', 'slick-js'), null, true);
+
+        // Variables JavaScript para configurar la carga bajo demanda
+        wp_localize_script('widget-slider', 'widget_slider_params', array(
+            'posts_per_slide' => 5,
+        ));
+    }
+
+    // Función para gestionar el formulario del widget en el backend
+    public function form($instance) {
+        $selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('selected_product'); ?>">Selecciona un producto de WooCommerce:</label>
+            <select class="widefat" id="<?php echo $this->get_field_id('selected_product'); ?>"
+                    name="<?php echo $this->get_field_name('selected_product'); ?>">
+                <?php
+                // Obtiene la lista de productos de WooCommerce
+                $products = wc_get_products(array('limit' => -1));
+                foreach ($products as $product) {
+                    echo '<option value="' . esc_attr($product->get_id()) . '" ' . selected($selected_product, $product->get_id()) . '>' . esc_html($product->get_name()) . '</option>';
+                }
+                ?>
+            </select>
+        </p>
+        <?php
+    }
+
+    // Función para guardar la configuración del widget
+    public function update($new_instance, $old_instance) {
+        $instance = array();
+        $instance['selected_product'] = (!empty($new_instance['selected_product'])) ? intval($new_instance['selected_product']) : 0;
+        return $instance;
     }
 }
 
-//Funcion render
-function render_product($product){
-    echo '<div class="slide">';
-    echo '<a href=" '. esc_url(get_permalink($product->get_id())) . '">';
-    echo '<img src=" '. esc_url($product->get_image()) .'" alt="' .esc_attr($product->get_name()) .'">';
-    echo '<h2>' . esc_url($product->get_name()). '</h2>';
-    echo '<span class="price">'. $product->get_price_html() .'</span>';
-    echo '</a>';
-    echo '</div>';
+// Registra el widget personalizado
+function register_custom_product_list_widget() {
+    register_widget('Custom_Product_List_Widget');
 }
 
-//Funcion para encolar scripts y estilos
-function enqueue_slick_slider(){
-    wp_enqueue_style('slick-css', '/css/slick.css');
-    wp_enqueue_script('slick-js', '/js/slick.min.js', array('jquery', 'slick-js', null, true));
-
-    //Script personalizado
-    wp_enqueue_script('widget-slider', '/js/widget-slider.js', array('jquery', 'slick-js', null, true));
-
-    //Variables JS carga bajo demanda
-    wp_localize_script('widget-slider', 'widget-slider-params', array(
-        'post_per_slide' => 5,
-    ));
-}
-
- // Función para gestionar el formulario del widget en el backend
- function form( $instance ) {
-    $selected_product = isset( $instance['selected_product'] ) ? $instance['selected_product'] : 0;
-    ?>
-    <p>
-        <label for="<?php echo $this->get_field_id( 'selected_product' ); ?>">Selecciona un producto de WooCommerce:</label>
-        <select class="widefat" id="<?php echo $this->get_field_id( 'selected_product' ); ?>" name="<?php echo $this->get_field_name( 'selected_product' ); ?>">
-            <?php
-            // Obtén la lista de productos de WooCommerce
-            $products = wc_get_products( array( 'limit' => -1 ) );
-            foreach ( $products as $product ) {
-                echo '<option value="' . esc_attr( $product->get_id() ) . '" ' . selected( $selected_product, $product->get_id() ) . '>' . esc_html( $product->get_name() ) . '</option>';
-            }
-            ?>
-        </select>
-    </p>
-    <?php
-}
-
-// Función para guardar la configuración del widget
-function update( $new_instance, $old_instance ) {
-    $instance = array();
-    $instance['selected_product'] = ( ! empty( $new_instance['selected_product'] ) ) ? intval( $new_instance['selected_product'] ) : 0;
-    return $instance;
-}
-
-
-?>
