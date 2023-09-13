@@ -111,3 +111,10 @@ class Custom_Category_Products_Widget extends WP_Widget {
         return $instance;
     }
 }
+
+// Registra el widget personalizado
+function register_custom_category_products_widget() {
+    register_widget('Custom_Category_Products_Widget');
+}
+
+add_action('widgets_init', 'register_custom_category_products_widget');
