@@ -1,40 +1,54 @@
-class Custom_Category_Products_Widget extends WP_Widget {
+
+<?php
+
+class Custom_Product_List_Widget extends WP_Widget {
     // Constructor
     public function __construct() {
         parent::__construct(
-            'custom_category_products_widget',
-            __('Productos por Categoría', 'text_domain'),
+            'custom_product_list_widget',
+            __('Slider Productos', 'text_domain'),
             array(
-                'description' => __('Muestra un slider de productos por categoría', 'text_domain')
+                'description' => __('Slider Productos', 'text_domain'),
             )
         );
     }
 
     // Función para mostrar contenido en el Frontend
     public function widget($args, $instance) {
+
+        //Para listar por producto
+        //$selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
+
+        //Para listar por categoria
         $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
 
-        // Verifica si se seleccionó una categoría
+        // Verifica si se seleccionó un producto    
         if ($selected_category > 0) {
-            // Obtiene los productos de la categoría seleccionada
-            $products = wc_get_products(array(
-                'category' => array($selected_category),
+            
+            $products_args = array(
+                'post_status' => 'publish',
+                'category' => $selected_category,
                 'limit' => -1,
-            ));
+            );
+            
+            // Guarda los productos seleccionado de la categoria
+            $products = wc_get_products($products_args);
 
-            // Verifica si hay productos en la categoría
-            if (!empty($products)) {
-                // Genera el div con la clase "widget-category-products"
-                echo '<div class="widget-category-products">';
+            // Verifica si el producto existe y es visible
+            //if (is_a($product, 'WC_Product') && $product->is_visible()) {
+
+                if (!empty($products)){
+                // Genera el div con la clase "widget-product"
+                echo '<div class="widget-product-category">';
 
                 // Genera el slider con Slick
                 echo '<div class="slick-slider">';
                 echo '<div class="slider-items">';
 
-                foreach ($products as $product) {
+                foreach ($products as $product){
                     $this->render_product($product);
                 }
-
+                
                 // Cierra el slider
                 echo '</div>';
 
@@ -44,17 +58,19 @@ class Custom_Category_Products_Widget extends WP_Widget {
                 echo '<button class="next">Next</button>';
                 echo '</div>';
 
-                // Cierra el div "widget-category-products"
+                // Cierra el div "widget-product"
                 echo '</div>';
                 echo '</div>';
 
                 // Encola los scripts de Slick Slider
                 $this->enqueue_slick_slider();
             } else {
-                echo 'No hay productos en esta categoría.';
+                echo 'No existen productos para esta categoria';
+                var_dump($products);
+                var_dump($selected_category);
             }
         } else {
-            echo 'No se seleccionó ninguna categoría.';
+            echo 'No se encuentra la categoria';
         }
     }
 
@@ -62,7 +78,7 @@ class Custom_Category_Products_Widget extends WP_Widget {
     private function render_product($product) {
         echo '<div class="slide">';
         echo '<a href="' . get_permalink($product->get_id()) . '">';
-        echo '<img src="' . $product->get_image() . '" alt="' . esc_attr($product->get_name()) . '">';
+        echo '<img src="' . $product->get_image() . '">'; // alt="'.esc_attr($product->get_name()).'"
         echo '<h2>' . esc_html($product->get_name()) . '</h2>';
         echo '<span class="price">' . $product->get_price_html() . '</span>';
         echo '</a>';
@@ -72,11 +88,11 @@ class Custom_Category_Products_Widget extends WP_Widget {
     // Función para encolar scripts y estilos
     private function enqueue_slick_slider() {
         // Asegúrate de que las rutas a los archivos CSS y JavaScript sean correctas
-        wp_enqueue_style('slick-css', get_template_directory_uri() . '/css/slick.css');
-        wp_enqueue_script('slick-js', get_template_directory_uri() . '/js/slick.min.js', array('jquery', 'slick-js'), null, true);
+        wp_enqueue_style('slick-css', get_template_directory_uri() . 'css/slick.css');
+        wp_enqueue_script('slick-js', get_template_directory_uri() . 'js/slick.min.js', array('jquery', 'slick-js'), null, true);
 
         // Agrega el script personalizado para el slider con carga bajo demanda
-        wp_enqueue_script('widget-slider', get_template_directory_uri() . '/js/widget-slider.js', array('jquery', 'slick-js'), null, true);
+        wp_enqueue_script('widget-slider', get_template_directory_uri() . 'js/widget-slider.js', array('jquery', 'slick-js'), null, true);
 
         // Variables JavaScript para configurar la carga bajo demanda
         wp_localize_script('widget-slider', 'widget_slider_params', array(
@@ -84,7 +100,6 @@ class Custom_Category_Products_Widget extends WP_Widget {
         ));
     }
 
-    // Función para gestionar el formulario del widget en el backend
     public function form($instance) {
         $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
         ?>
@@ -93,6 +108,7 @@ class Custom_Category_Products_Widget extends WP_Widget {
             <select class="widefat" id="<?php echo $this->get_field_id('selected_category'); ?>"
                     name="<?php echo $this->get_field_name('selected_category'); ?>">
                 <?php
+
                 // Obtiene la lista de categorías de productos de WooCommerce
                 $product_categories = get_terms('product_cat', array('hide_empty' => false));
                 foreach ($product_categories as $category) {
@@ -112,9 +128,3 @@ class Custom_Category_Products_Widget extends WP_Widget {
     }
 }
 
-// Registra el widget personalizado
-function register_custom_category_products_widget() {
-    register_widget('Custom_Category_Products_Widget');
-}
-
-add_action('widgets_init', 'register_custom_category_products_widget');
