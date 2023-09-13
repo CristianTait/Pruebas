@@ -1,130 +1,102 @@
+<div class="flickity-viewport" style="height: 349.825px; touch-action: pan-y;">
+    <div class="flickity-slider" style="left: 0px; transform: translateX(-200%);">
+        <div class="col is-selected" style="position: absolute; left: 200%;">
+            <div class="col-inner">
 
-<?php
+                <div class="badge-container absolute left top z-1">
 
-class Custom_Product_List_Widget extends WP_Widget {
-    // Constructor
-    public function __construct() {
-        parent::__construct(
-            'custom_product_list_widget',
-            __('Slider Productos', 'text_domain'),
-            array(
-                'description' => __('Slider Productos', 'text_domain'),
-            )
-        );
-    }
+                </div>
+                <div class="product-small box has-hover box-normal box-text-bottom">
+                    <div class="box-image">
+                        <div class="">
+                            <a href="https://env-game24hs-cristian.kinsta.cloud/shop/juegos/ps4/deportes-ps4/ea-sports-fc-24-standard-edition/"
+                                aria-label="EA SPORTS FC 24 Standard Edition">
+                                <img width="247" height="309"
+                                    src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/07/EA-SPORTS-FC™-24-Standard-Edition-247x309.jpg"
+                                    data-lazy-type="image"
+                                    data-src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/07/EA-SPORTS-FC™-24-Standard-Edition-247x309.jpg"
+                                    class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail lazy-loaded lazy-load-active"
+                                    alt="" decoding="async" srcset="" data-srcset=""
+                                    sizes="(max-width: 247px) 100vw, 247px"><noscript><img width="247" height="309"
+                                        src="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20309%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3C%2Fsvg%3E"
+                                        data-src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/07/EA-SPORTS-FC™-24-Standard-Edition-247x309.jpg"
+                                        class="lazy-load attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                        alt="" decoding="async" srcset=""
+                                        data-srcset="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/07/EA-SPORTS-FC™-24-Standard-Edition-247x309.jpg 247w, https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/07/EA-SPORTS-FC™-24-Standard-Edition-65x80.jpg 65w"
+                                        sizes="(max-width: 247px) 100vw, 247px" /></noscript> </a>
+                        </div>
+                        <div class="image-tools top right show-on-hover">
+                        </div>
+                        <div
+                            class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                        </div>
+                    </div>
 
-    // Función para mostrar contenido en el Frontend
-    public function widget($args, $instance) {
+                    <div class="box-text text-center" style="height: 88.2875px;">
+                        <div class="title-wrapper">
+                            <p class="name product-title woocommerce-loop-product__title" style="height: 40.7875px;"><a
+                                    href="https://env-game24hs-cristian.kinsta.cloud/shop/juegos/ps4/deportes-ps4/ea-sports-fc-24-standard-edition/"
+                                    class="woocommerce-LoopProduct-link woocommerce-loop-product__link">EA SPORTS FC 24
+                                    Standard Edition</a></p>
+                        </div>
+                        <div class="price-wrapper" style="height: 14.4px;">
+                            <span class="price"><span class="woocs_price_code" data-currency=""
+                                    data-redraw-id="6501d3f392901" data-product-id="712847">Desde <span
+                                        class="woocommerce-Price-amount amount"><bdi>31.760&nbsp;<span
+                                                class="woocommerce-Price-currencySymbol">ARS</span></bdi></span></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col is-selected" style="position: absolute; left: 220%;">
+            <div class="col-inner">
 
-        //Para listar por producto
-        //$selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
+                <div class="badge-container absolute left top z-1">
 
-        //Para listar por categoria
-        $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
+                </div>
+                <div class="product-small box has-hover box-normal box-text-bottom">
+                    <div class="box-image">
+                        <div class="">
+                            <a href="https://env-game24hs-cristian.kinsta.cloud/shop/juegos/ps4/accion-ps4/street-fighter-6/"
+                                aria-label="Street Fighter 6">
+                                <img width="247" height="309"
+                                    src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/06/Street-Fighter-6-247x309.jpg"
+                                    data-lazy-type="image"
+                                    data-src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/06/Street-Fighter-6-247x309.jpg"
+                                    class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail lazy-loaded lazy-load-active"
+                                    alt="" decoding="async" srcset="" data-srcset=""
+                                    sizes="(max-width: 247px) 100vw, 247px"><noscript><img width="247" height="309"
+                                        src="data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20247%20309%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3C%2Fsvg%3E"
+                                        data-src="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/06/Street-Fighter-6-247x309.jpg"
+                                        class="lazy-load attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                        alt="" decoding="async" srcset=""
+                                        data-srcset="https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/06/Street-Fighter-6-247x309.jpg 247w, https://env-game24hs-cristian.kinsta.cloud/wp-content/uploads/2023/06/Street-Fighter-6-65x80.jpg 65w"
+                                        sizes="(max-width: 247px) 100vw, 247px" /></noscript> </a>
+                        </div>
+                        <div class="image-tools top right show-on-hover">
+                        </div>
+                        <div
+                            class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                        </div>
+                    </div>
 
-        // Verifica si se seleccionó un producto    
-        if ($selected_category > 0) {
-            
-            $products_args = array(
-                'post_status' => 'publish',
-                'category' => $selected_category,
-                'limit' => -1,
-            );
-            
-            // Guarda los productos seleccionado de la categoria
-            $products = wc_get_products($products_args);
-
-            // Verifica si el producto existe y es visible
-            //if (is_a($product, 'WC_Product') && $product->is_visible()) {
-
-                if (!empty($products)){
-                // Genera el div con la clase "widget-product"
-                echo '<div class="widget-product-category">';
-
-                // Genera el slider con Slick
-                echo '<div class="slick-slider">';
-                echo '<div class="slider-items">';
-
-                foreach ($products as $product){
-                    $this->render_product($product);
-                }
-                
-                // Cierra el slider
-                echo '</div>';
-
-                // Agrega los controles del slider
-                echo '<div class="slider-controls">';
-                echo '<button class="prev">Prev</button>';
-                echo '<button class="next">Next</button>';
-                echo '</div>';
-
-                // Cierra el div "widget-product"
-                echo '</div>';
-                echo '</div>';
-
-                // Encola los scripts de Slick Slider
-                $this->enqueue_slick_slider();
-            } else {
-                echo 'No existen productos para esta categoria';
-                var_dump($products);
-                var_dump($selected_category);
-            }
-        } else {
-            echo 'No se encuentra la categoria';
-        }
-    }
-
-    // Función para generar el HTML de un producto
-    private function render_product($product) {
-        echo '<div class="slide">';
-        echo '<a href="' . get_permalink($product->get_id()) . '">';
-        echo '<img src="' . $product->get_image() . '">'; // alt="'.esc_attr($product->get_name()).'"
-        echo '<h2>' . esc_html($product->get_name()) . '</h2>';
-        echo '<span class="price">' . $product->get_price_html() . '</span>';
-        echo '</a>';
-        echo '</div>';
-    }
-
-    // Función para encolar scripts y estilos
-    private function enqueue_slick_slider() {
-        // Asegúrate de que las rutas a los archivos CSS y JavaScript sean correctas
-        wp_enqueue_style('slick-css', get_template_directory_uri() . 'css/slick.css');
-        wp_enqueue_script('slick-js', get_template_directory_uri() . 'js/slick.min.js', array('jquery', 'slick-js'), null, true);
-
-        // Agrega el script personalizado para el slider con carga bajo demanda
-        wp_enqueue_script('widget-slider', get_template_directory_uri() . 'js/widget-slider.js', array('jquery', 'slick-js'), null, true);
-
-        // Variables JavaScript para configurar la carga bajo demanda
-        wp_localize_script('widget-slider', 'widget_slider_params', array(
-            'posts_per_slide' => 5,
-        ));
-    }
-
-    public function form($instance) {
-        $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
-        ?>
-        <p>
-            <label for="<?php echo $this->get_field_id('selected_category'); ?>">Selecciona una categoría de productos de WooCommerce:</label>
-            <select class="widefat" id="<?php echo $this->get_field_id('selected_category'); ?>"
-                    name="<?php echo $this->get_field_name('selected_category'); ?>">
-                <?php
-
-                // Obtiene la lista de categorías de productos de WooCommerce
-                $product_categories = get_terms('product_cat', array('hide_empty' => false));
-                foreach ($product_categories as $category) {
-                    echo '<option value="' . esc_attr($category->term_id) . '" ' . selected($selected_category, $category->term_id) . '>' . esc_html($category->name) . '</option>';
-                }
-                ?>
-            </select>
-        </p>
-        <?php
-    }
-
-    // Función para guardar la configuración del widget
-    public function update($new_instance, $old_instance) {
-        $instance = array();
-        $instance['selected_category'] = (!empty($new_instance['selected_category'])) ? intval($new_instance['selected_category']) : 0;
-        return $instance;
-    }
-}
-
+                    <div class="box-text text-center" style="height: 88.2875px;">
+                        <div class="title-wrapper">
+                            <p class="name product-title woocommerce-loop-product__title" style="height: 40.7875px;"><a
+                                    href="https://env-game24hs-cristian.kinsta.cloud/shop/juegos/ps4/accion-ps4/street-fighter-6/"
+                                    class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Street Fighter
+                                    6</a></p>
+                        </div>
+                        <div class="price-wrapper" style="height: 14.4px;">
+                            <span class="price"><span class="woocs_price_code" data-currency=""
+                                    data-redraw-id="6501d3f3958bf" data-product-id="702238">Desde <span
+                                        class="woocommerce-Price-amount amount"><bdi>26.880&nbsp;<span
+                                                class="woocommerce-Price-currencySymbol">ARS</span></bdi></span></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
