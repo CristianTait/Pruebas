@@ -1,40 +1,33 @@
-// Define la función mejorarLpc
-function mejorarLpc() {
-  // Coloca aquí tu código para mejorar el Largest Contentful Paint
-  console.log('Mejorando el Largest Contentful Paint');
-}
+echo '<div class="col' . ($index === 0 ? ' is-selected' : '') . '" style="position: absolute; left: ' . ($index * 20) . '%;">';
+                echo '<div class="col-inner">';
 
-// Agrega un evento 'DOMContentLoaded' para ejecutar código después de que el DOM se cargue
-document.addEventListener('DOMContentLoaded', () => {
-  // Registra el inicio del tiempo de carga
-  const startTime = performance.now();
+                // A continuación, puedes generar los elementos de tu producto usando la estructura HTML proporcionada por Flatsome
+                // Reemplaza esto con la estructura de tu producto y los datos que deseas mostrar
+                echo '<div class="badge-container absolute left top z-1"></div>';
+                echo '<div class="product-small box has-hover box-normal box-text-bottom">';
+                echo '<div class="box-image">';
+                echo '<div>';
+                echo '<a href="' . esc_url(get_permalink($product->get_id())) . '" aria-label="' . esc_attr($product->get_name()) . '">';
+                echo '<img width="247" height="309" src="' . esc_url($product->get_image()) . '" alt="' . esc_attr($product->get_name()) . '" />';
+                echo '</a>';
+                echo '</div>';
+                echo '<div class="image-tools top right show-on-hover"></div>';
+                echo '<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover"></div>';
+                echo '</div>';
+                echo '<div class="box-text text-center">';
+                echo '<div class="title-wrapper">';
+                echo '<p class="name product-title woocommerce-loop-product__title"><a href="' . esc_url(get_permalink($product->get_id())) . '" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">' . esc_html($product->get_name()) . '</a></p>';
+                echo '</div>';
+                echo '<div class="price-wrapper">';
+                echo '<span class="price">' . $product->get_price_html() . '</span>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
+            }
 
-  // Registra el evento LCP
-  const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      if (entry.entryType === 'largest-contentful-paint') {
-        // Aquí puedes registrar el valor de LCP y tomar medidas en consecuencia
-        console.log('LCP:', entry.startTime);
-
-        // Llama a tu función mejorarLpc() cuando se registre el LCP
-        mejorarLpc();
-      }
-    }
-  });
-
-  observer.observe({ type: 'largest-contentful-paint', buffered: true });
-
-  // Registra el tiempo total de carga
-  window.addEventListener('load', () => {
-    const loadTime = performance.now() - startTime;
-    console.log('Tiempo total de carga:', loadTime);
-  });
-
-  // Obtén todas las etiquetas <img> en la página
-  const imagenes = document.querySelectorAll('img');
-
-  // Recorre todas las imágenes y agrega el atributo 'loading' con el valor 'lazy'
-  imagenes.forEach((imagen) => {
-    imagen.setAttribute('loading', 'lazy');
-  });
-});
+            // Cierra el slider y el contenedor principal
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
