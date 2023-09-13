@@ -1,79 +1,26 @@
-$classes_col = array('col');
+    // Función para gestionar el formulario del widget en el backend
+    public function form( $instance ) {
+        $selected_product = isset( $instance['selected_product'] ) ? $instance['selected_product'] : 0;
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'selected_product' ); ?>">Selecciona un producto de WooCommerce:</label>
+            <select class="widefat" id="<?php echo $this->get_field_id( 'selected_product' ); ?>" name="<?php echo $this->get_field_name( 'selected_product' ); ?>">
+                <?php
+                // Obtén la lista de productos de WooCommerce
+                $products = wc_get_products( array( 'limit' => -1 ) );
+                foreach ( $products as $product ) {
+                    echo '<option value="' . esc_attr( $product->get_id() ) . '" ' . selected( $selected_product, $product->get_id() ) . '>' . esc_html( $product->get_name() ) . '</option>';
+                }
+                ?>
+            </select>
+        </p>
+        <?php
+    }
 
-      					$out_of_stock = ! $product->is_in_stock();
-      					if($out_of_stock) $classes[] = 'out-of-stock';
-
-	            	if($type == 'grid'){
-				        if($grid_total > $current_grid) $current_grid++;
-				        $current = $current_grid-1;
-				        $classes_col[] = 'grid-col';
-				        if($grid[$current]['height']) $classes_col[] = 'grid-col-'.$grid[$current]['height'];
-
-				        if($grid[$current]['span']) $classes_col[] = 'large-'.$grid[$current]['span'];
-       					 if($grid[$current]['md']) $classes_col[] = 'medium-'.$grid[$current]['md'];
-				        // Set image size
-				        if($grid[$current]['size']) $image_size = $grid[$current]['size'];
-				    }
-	            	?><div class="<?php echo implode(' ', $classes_col); ?>" <?php echo $animate;?>>
-						<div class="col-inner">
-						<?php woocommerce_show_product_loop_sale_flash(); ?>
-						<div class="product-small <?php echo implode(' ', $classes_box); ?>">
-							<div class="box-image" <?php echo get_shortcode_inline_css($css_args_img); ?>>
-								<div class="<?php echo implode(' ', $classes_image); ?>" <?php echo get_shortcode_inline_css($css_image_height); ?>>
-									<a href="<?php echo get_the_permalink(); ?>" aria-label="<?php echo esc_attr( $product->get_title() ); ?>">
-										<?php
-											if($back_image) flatsome_woocommerce_get_alt_product_thumbnail($image_size);
-											echo woocommerce_get_product_thumbnail($image_size);
-										?>
-									</a>
-									<?php if($image_overlay){ ?><div class="overlay fill" style="background-color: <?php echo $image_overlay;?>"></div><?php } ?>
-									 <?php if($style == 'shade'){ ?><div class="shade"></div><?php } ?>
-								</div>
-								<div class="image-tools top right show-on-hover">
-									<?php do_action('flatsome_product_box_tools_top'); ?>
-								</div>
-								<?php if($style !== 'shade' && $style !== 'overlay') { ?>
-									<div class="image-tools <?php echo flatsome_product_box_actions_class(); ?>">
-										<?php  do_action('flatsome_product_box_actions'); ?>
-									</div>
-								<?php } ?>
-								<?php if($out_of_stock) { ?><div class="out-of-stock-label"><?php _e( 'Out of stock', 'woocommerce' ); ?></div><?php }?>
-							</div>
-
-							<div class="box-text <?php echo implode(' ', $classes_text); ?>" <?php echo get_shortcode_inline_css($css_args); ?>>
-								<?php
-									do_action( 'woocommerce_before_shop_loop_item_title' );
-
-									echo '<div class="title-wrapper">';
-									do_action( 'woocommerce_shop_loop_item_title' );
-									echo '</div>';
-
-									echo '<div class="price-wrapper">';
-									do_action( 'woocommerce_after_shop_loop_item_title' );
-									echo '</div>';
-
-									if($style == 'shade' || $style == 'overlay') {
-									echo '<div class="overlay-tools">';
-										do_action('flatsome_product_box_actions');
-									echo '</div>';
-									}
-
-									do_action( 'flatsome_product_box_after' );
-
-								?>
-							</div>
-						</div>
-						</div>
-					</div><?php }
-					endwhile; // end of the loop.
-	        endif;
-	        wp_reset_query();
-
-	get_flatsome_repeater_end($repeater);
-	flatsome_box_item_toggle_end( $items );
-
-	$content = ob_get_contents();
-	ob_end_clean();
-
-	return $content;
+    // Función para guardar la configuración del widget
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+        $instance['selected_product'] = ( ! empty( $new_instance['selected_product'] ) ) ? intval( $new_instance['selected_product'] ) : 0;
+        return $instance;
+    }
 }
