@@ -1,4 +1,29 @@
-echo '<div class="col' . ($index === 0 ? ' is-selected' : '') . '" style="position: absolute; left: ' . ($index * 20) . '%;">';
+public function widget($args, $instance) {
+    // Para listar por producto
+    // $selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
+
+    // Para listar por categoría
+    $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
+
+    // Verifica si se seleccionó una categoría    
+    if ($selected_category > 0) {
+        $products_args = array(
+            'post_status' => 'publish',
+            'category' => $selected_category,
+            'limit' => -1,
+        );
+
+        // Guarda los productos seleccionados de la categoría
+        $products = wc_get_products($products_args);
+
+        // Verifica si hay productos en la categoría
+        if (!empty($products)) {
+            // Comienza la salida de HTML
+            echo '<div class="flickity-viewport" style="height: 349.825px; touch-action: pan-y;">';
+            echo '<div class="flickity-slider" style="left: 0px; transform: translateX(-200%);">';
+            
+            foreach ($products as $index => $product) {
+                echo '<div class="col' . ($index === 0 ? ' is-selected' : '') . '" style="position: absolute; left: ' . ($index * 20) . '%;">';
                 echo '<div class="col-inner">';
 
                 // A continuación, puedes generar los elementos de tu producto usando la estructura HTML proporcionada por Flatsome
@@ -31,3 +56,13 @@ echo '<div class="col' . ($index === 0 ? ' is-selected' : '') . '" style="positi
             echo '</div>';
             echo '</div>';
             echo '</div>';
+
+            // Encola los scripts de Slick Slider
+            $this->enqueue_slick_slider();
+        } else {
+            echo 'No existen productos para esta categoría';
+        }
+    } else {
+        echo 'No se encuentra la categoría';
+    }
+}
