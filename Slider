@@ -119,7 +119,9 @@ wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js
 
         // Variables JavaScript para configurar la carga bajo demanda
         wp_localize_script('widget-slider', 'widget_slider_params', array(
-            'posts_per_slide' => 5,
+            'slidesToShow' => 5, // Muestra 5 productos por slide
+            'vertical' => true, // Slider vertical
+            'lazyLoad' => 'ondemand', // Carga bajo demanda
         ));
     }
 
