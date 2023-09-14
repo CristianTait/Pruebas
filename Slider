@@ -1,0 +1,161 @@
+
+<?php
+
+class Custom_Product_List_Widget extends WP_Widget {
+    // Constructor
+    public function __construct() {
+        parent::__construct(
+            'custom_product_list_widget',
+            __('Slider Productos', 'text_domain'),
+            array(
+                'description' => __('Slider Productos', 'text_domain'),
+            )
+        );
+    }
+
+    // Función para mostrar contenido en el Frontend
+    public function widget($args, $instance) {
+
+        //Para listar por producto
+        //$selected_product = isset($instance['selected_product']) ? $instance['selected_product'] : 0;
+
+        //Para listar por categoria
+        $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
+
+        // Verifica si se seleccionó un producto    
+        if ($selected_category > 0) {
+            
+            $products_args = array(
+                'post_status' => 'publish',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'product_cat',
+                        'field' => 'id',
+                        'terms' => $selected_category,
+                        'operator' => 'IN',
+                    ),
+                ),
+                'posts_per_page' => -1,
+            );
+            
+            // Guarda los productos seleccionado de la categoria
+            $products = wc_get_products($products_args);
+
+            // Verifica si el producto existe y es visible
+            //if (is_a($product, 'WC_Product') && $product->is_visible()) {
+
+                if (!empty($products)){
+                  // Genera el div con la clase "widget-product"
+                echo '<div class="widget-product-category">';
+
+                // Genera el slider con Slick
+                echo '<div class="slick-slider">';
+                echo '<div class="slider-items">';
+
+                foreach ($products as $product){
+                    $this->render_product($product);
+                }
+                
+                // Cierra el slider
+                echo '</div>';
+
+                // Agrega los controles del slider
+                echo '<div class="slider-controls">';
+                echo '<button class="prev">Prev</button>';
+                echo '<button class="next">Next</button>';
+                echo '</div>';
+
+                // Cierra el div "widget-product"
+                echo '</div>';
+                echo '</div>';
+
+                // Encola los scripts de Slick Slider
+                $this->enqueue_slick_slider();
+            } else {
+                echo 'No existen productos para esta categoria';
+                var_dump($products);
+                var_dump($selected_category);
+            }
+        } else {
+            echo 'No se encuentra la categoria';
+        }
+    }
+
+    // Función para generar el HTML de un producto
+    private function render_product($product) {
+
+        $product_id = $product->get_id();
+        $imagen_url = get_the_post_thumbnail_url($product_id, 'thumbnail');
+
+        echo '<div class="slide">';
+        echo '<a href="' . get_permalink($product->get_id()) . '">';
+
+        if ($imagen_url){
+            echo '<img class="img-slider" src="'.esc_url($imagen_url).'" alt="'.esc_attr($product->get_name()).'"/>';
+        }else{
+            echo '<img class="img-slider" src="'.esc_url(wc_placeholder_img_src()).'" alt="'.esc_attr($product->get_name()).'"/>';
+        }
+        echo '<h2>' . esc_html($product->get_name()) . '</h2>';
+        echo '<span class="price">' . $product->get_price_html() . '</span>';
+        echo '</a>';
+        echo '</div>';
+    }
+
+    // Función para encolar scripts y estilos
+    private function enqueue_slick_slider() {
+        wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-2.2.0.min.js', array(), '1.0', 'all');
+        wp_enqueue_style('slick-css', get_stylesheet_directory_uri() . '/widgets/css/slick.css', array(), '1.0', 'all');
+        wp_enqueue_style('slick-theme', get_stylesheet_directory_uri() . '/widgets/css/slick-theme.css', array(), '1.0', 'all');
+        wp_enqueue_style('styles-css', get_stylesheet_directory_uri() . '/widgets/css/styles.css', array(), '1.0', 'all');
+        wp_enqueue_script('slick-js', get_stylesheet_directory_uri() . '/widgets/js/slick.min.js', array(), '1.0', 'all');
+        
+      
+
+        // Agrega el script personalizado para el slider con carga bajo demanda
+        wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js/widget-slider.js', array(), '1.0', 'all');
+
+        // Variables JavaScript para configurar la carga bajo demanda
+        wp_localize_script('widget-slider', 'widget_slider_params', array(
+            'posts_per_slide' => 5,
+        ));
+    }
+
+    public function form($instance) {
+        $selected_category = isset($instance['selected_category']) ? $instance['selected_category'] : 0;
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('selected_category'); ?>">Selecciona una categoría de productos de WooCommerce:</label>
+            <select class="widefat" id="<?php echo $this->get_field_id('selected_category'); ?>"
+                    name="<?php echo $this->get_field_name('selected_category'); ?>">
+                <?php
+
+                // Obtiene la lista de categorías de productos de WooCommerce
+                $product_categories = get_terms('product_cat', array('hide_empty' => false));
+                foreach ($product_categories as $category) {
+                    echo '<option value="' . esc_attr($category->term_id) . '" ' . selected($selected_category, $category->term_id) . '>' . esc_html($category->name) . '</option>';
+                }
+                ?>
+            </select>
+        </p>
+        <?php
+    }
+
+    // Función para guardar la configuración del widget
+    public function update($new_instance, $old_instance) {
+        $instance = array();
+        $instance['selected_category'] = (!empty($new_instance['selected_category'])) ? intval($new_instance['selected_category']) : 0;
+        return $instance;
+    }
+}
+
+
+
+JS:
+
+jQuery(document).ready(function($){
+    $('.slick-slider')({
+        slidesToShow: widget-slider-params.post_per_slide,
+        prevArrow: '.prev',
+        nextArrow: '.next',
+    });
+});
