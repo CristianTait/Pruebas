@@ -103,16 +103,19 @@ class Custom_Product_List_Widget extends WP_Widget {
 
     // Función para encolar scripts y estilos
     private function enqueue_slick_slider() {
-        wp_enqueue_script('jquery');
-        wp_enqueue_style('slick-css', get_stylesheet_directory_uri() . '/widgets/css/slick.css', array(), '1.0', 'all',999);
-        wp_enqueue_style('slick-theme', get_stylesheet_directory_uri() . '/widgets/css/slick-theme.css', array(), '1.0', 'all',999);
-        wp_enqueue_style('styles-css', get_stylesheet_directory_uri() . '/widgets/css/styles.css', array(), '1.0', 'all',999);
-        wp_enqueue_script('slick-js', get_stylesheet_directory_uri() . '/widgets/js/slick.min.js', array(), '1.0', true,999);
-        
-      
+// Asegura que se cargue jQuery primero (prioridad 1)
+wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-2.2.0.min.js', array(), '2.2.0', true, 1);
 
-        // Agrega el script personalizado para el slider con carga bajo demanda
-        wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js/widget-slider-V1.js', array('jquery', 'slick-js'), '1.0', true,999 );
+// Establece prioridades personalizadas para los archivos CSS
+wp_enqueue_style('slick-css', get_stylesheet_directory_uri() . '/widgets/css/slick.css', array(), '1.0', 'all', 999);
+wp_enqueue_style('slick-theme', get_stylesheet_directory_uri() . '/widgets/css/slick-theme.css', array(), '1.0', 'all', 999);
+wp_enqueue_style('styles-css', get_stylesheet_directory_uri() . '/widgets/css/styles.css', array(), '1.0', 'all', 999);
+
+// Establece prioridad 100 para Slick JS (puede ajustarse según sea necesario)
+wp_enqueue_script('slick-js', get_stylesheet_directory_uri() . '/widgets/js/slick.min.js', array('jquery'), '1.0', true, 100);
+
+// Establece prioridad 101 para el script personalizado del slider
+wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js/widget-slider-V1.js', array('jquery', 'slick-js'), '1.0', true, 101);
 
         // Variables JavaScript para configurar la carga bajo demanda
         wp_localize_script('widget-slider', 'widget_slider_params', array(
