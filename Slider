@@ -49,7 +49,7 @@ class Custom_Product_List_Widget extends WP_Widget {
                 echo '<div class="widget-product-category">';
 
                 // Genera el slider con Slick
-                echo '<div class="slick-slider">';
+                echo '<div class="slick-slider" id="slick-slider">';
                 echo '<div class="slider-items">';
 
                 foreach ($products as $product){
@@ -112,7 +112,7 @@ class Custom_Product_List_Widget extends WP_Widget {
       
 
         // Agrega el script personalizado para el slider con carga bajo demanda
-        wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js/widget-slider.js', array(), '1.0', 'all');
+        wp_enqueue_script('widget-slider', get_stylesheet_directory_uri() . '/widgets/js/widget-slider-V1.js', array('jquery', 'slick-js'), '1.0', true);
 
         // Variables JavaScript para configurar la carga bajo demanda
         wp_localize_script('widget-slider', 'widget_slider_params', array(
@@ -147,15 +147,3 @@ class Custom_Product_List_Widget extends WP_Widget {
         return $instance;
     }
 }
-
-
-
-JS:
-
-jQuery(document).ready(function($){
-    $('.slick-slider')({
-        slidesToShow: widget-slider-params.post_per_slide,
-        prevArrow: '.prev',
-        nextArrow: '.next',
-    });
-});
